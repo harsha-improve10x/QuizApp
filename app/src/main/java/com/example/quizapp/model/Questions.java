@@ -1,5 +1,7 @@
 package com.example.quizapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class Questions {
@@ -10,6 +12,7 @@ public class Questions {
 
     private ArrayList<String> answers;
 
+    @SerializedName("correct_answer")
     private Integer correctAnswer;
 
     public Integer getNumber() {

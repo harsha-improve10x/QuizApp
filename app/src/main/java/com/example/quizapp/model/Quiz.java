@@ -1,9 +1,12 @@
 package com.example.quizapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class Quiz {
 
+    @SerializedName("_id")
     private String id;
 
     private Module module;
