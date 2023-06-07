@@ -11,7 +11,7 @@ public class Quiz {
 
     private Module module;
 
-    private ArrayList<Questions> questions;
+    private ArrayList<Question> questions;
 
     public String getId() {
         return id;
@@ -29,11 +29,12 @@ public class Quiz {
         this.module = module;
     }
 
-    public ArrayList<Questions> getQuestions() {
+    public ArrayList<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(ArrayList<Questions> questions) {
+    public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
     }
+
 }

@@ -27,7 +27,7 @@ public class ExampleUnitTest {
     @Test
     public void fetchDetails() throws IOException {
         QuizService quizService = new QuizApi().createQuizService();
-        Call<List<Quiz>> call = quizService.fetchQuizDetails();
+        Call <List<Quiz>> call = quizService.fetchQuizDetails();
         List<Quiz> quiz = call.execute().body();
         assertNotNull(quiz);
         assertFalse(quiz.isEmpty());
