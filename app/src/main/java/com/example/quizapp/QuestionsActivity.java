@@ -40,6 +40,12 @@ public class QuestionsActivity extends BaseActivity {
     private void setUpQuestionsAdapter() {
         questionsAdapter = new QuestionsAdapter();
         questionsAdapter.setQuestionsList(new ArrayList<>());
+        questionsAdapter.setOnItemActionListener(new OnItemActionListener() {
+            @Override
+            public void onClicked(Question question) {
+                showData(question);
+            }
+        });
     }
 
     private void fetchQuestionDetails() {
@@ -57,5 +63,13 @@ public class QuestionsActivity extends BaseActivity {
                 showToast("Failed to fetch Data");
             }
         });
+    }
+
+    private void showData(Question question) {
+        activityQuestionsBinding.questionTxt.setText(question.getQuestion());
+        activityQuestionsBinding.rb1.setText(question.getAnswers().get(0));
+        activityQuestionsBinding.rb2.setText(question.getAnswers().get(1));
+        activityQuestionsBinding.rb3.setText(question.getAnswers().get(2));
+        activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
     }
 }
