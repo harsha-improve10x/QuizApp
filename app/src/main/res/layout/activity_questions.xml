@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BC0F0F"
+    android:backgroundTint="#FFEB3B"
     tools:context=".QuestionsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,8 @@
         android:layout_marginTop="60dp"
         android:text="TextView"
         android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/questions_rv" />
 
@@ -61,7 +65,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/question_prev_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -71,7 +75,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/question_next_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

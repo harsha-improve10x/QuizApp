@@ -1,5 +1,7 @@
 package com.example.quizapp;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
     private List<Question> questionList;
-
+    int currentPositionNumber = 0;
     private OnItemActionListener onItemActionListener;
     public void setQuestionsList(List<Question> questionList) {
         this.questionList = questionList;
@@ -22,6 +24,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> 
 
     public void setOnItemActionListener(OnItemActionListener onItemActionListener) {
         this.onItemActionListener = onItemActionListener;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -33,12 +36,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuestionsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull QuestionsViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Question question = questionList.get(position);
         holder.questionItemLayoutBinding.questionsNumberTxt.setText(String.valueOf(position+1));
         holder.questionItemLayoutBinding.getRoot().setOnClickListener(v -> {
             onItemActionListener.onClicked(question);
+            currentPositionNumber = position;
+            notifyDataSetChanged();
         });
+        if (currentPositionNumber == position) {
+            holder.questionItemLayoutBinding.questionsNumberTxt.setTextColor(Color.parseColor("#311B92"));
+        } else {
+            holder.questionItemLayoutBinding.questionsNumberTxt.setTextColor(Color.parseColor("#FFFFFF"));
+        }
     }
 
     @Override

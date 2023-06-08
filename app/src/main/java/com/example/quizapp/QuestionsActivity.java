@@ -21,6 +21,7 @@ public class QuestionsActivity extends BaseActivity {
     private ActivityQuestionsBinding activityQuestionsBinding;
     private List<Question> questions = new ArrayList<>();
     private QuestionsAdapter questionsAdapter;
+    int currentQuestionNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class QuestionsActivity extends BaseActivity {
         setUpQuestionsAdapter();
         setUpQuestionRv();
         fetchQuestionDetails();
+       // handleNextBtn();
     }
 
     private void setUpQuestionRv() {
@@ -56,6 +58,7 @@ public class QuestionsActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     questions = response.body().get(0).getQuestions();
                     questionsAdapter.setQuestionsList(questions);
+                    showData(questions.get(0));
                 }
             }
             @Override
@@ -72,4 +75,11 @@ public class QuestionsActivity extends BaseActivity {
         activityQuestionsBinding.rb3.setText(question.getAnswers().get(2));
         activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
     }
+
+   // private void handleNextBtn() {
+     //   activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
+       //     currentQuestionNumber++;
+         //   questions.get(currentQuestionNumber);
+        //});
+   // }
 }
