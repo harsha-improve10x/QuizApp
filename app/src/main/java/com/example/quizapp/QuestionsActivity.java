@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.quizapp.databinding.ActivityQuestionsBinding;
 import com.example.quizapp.model.Question;
@@ -21,7 +22,7 @@ public class QuestionsActivity extends BaseActivity {
     private ActivityQuestionsBinding activityQuestionsBinding;
     private List<Question> questions = new ArrayList<>();
     private QuestionsAdapter questionsAdapter;
-    int currentQuestionNumber = 1;
+    private int currentQuestionNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class QuestionsActivity extends BaseActivity {
         setUpQuestionsAdapter();
         setUpQuestionRv();
         fetchQuestionDetails();
-       // handleNextBtn();
+        handleNextBtn();
     }
 
     private void setUpQuestionRv() {
@@ -76,10 +77,18 @@ public class QuestionsActivity extends BaseActivity {
         activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
     }
 
-   // private void handleNextBtn() {
-     //   activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
-       //     currentQuestionNumber++;
-         //   questions.get(currentQuestionNumber);
-        //});
-   // }
+    private void handleNextBtn() {
+            activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
+                try {
+                    currentQuestionNumber = questionsAdapter.currentPositionNumber;
+                currentQuestionNumber++;
+                Question question = questions.get(currentQuestionNumber);
+                showData(question);
+                questionsAdapter.currentPositionNumber = currentQuestionNumber;
+                questionsAdapter.notifyDataSetChanged();
+                } catch (Exception exception) {
+                    showToast("Invalid Question");
+                }
+            });
+    }
 }

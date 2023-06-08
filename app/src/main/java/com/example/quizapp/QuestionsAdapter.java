@@ -15,7 +15,7 @@ import java.util.List;
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
     private List<Question> questionList;
-    int currentPositionNumber = 0;
+    protected int currentPositionNumber = 0;
     private OnItemActionListener onItemActionListener;
     public void setQuestionsList(List<Question> questionList) {
         this.questionList = questionList;
