@@ -76,17 +76,29 @@ public class QuestionsActivity extends BaseActivity {
         activityQuestionsBinding.rb2.setText(question.getAnswers().get(1));
         activityQuestionsBinding.rb3.setText(question.getAnswers().get(2));
         activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
+        currentQuestionNumber = question.getNumber()-1;
+        questionsAdapter.currentPositionNumber = currentQuestionNumber;
+        questionsAdapter.notifyDataSetChanged();
+        if (currentQuestionNumber == 0) {
+            activityQuestionsBinding.questionPrevBtn.setVisibility(View.INVISIBLE);
+        } else {
+            activityQuestionsBinding.questionPrevBtn.setVisibility(View.VISIBLE);
+        }
+        if (currentQuestionNumber == questions.size()-1) {
+            activityQuestionsBinding.questionNextBtn.setVisibility(View.INVISIBLE);
+            activityQuestionsBinding.submitBtn.setVisibility(View.VISIBLE);
+        } else {
+            activityQuestionsBinding.questionNextBtn.setVisibility(View.VISIBLE);
+            activityQuestionsBinding.submitBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void handleNextBtn() {
             activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
                 try {
-                    currentQuestionNumber = questionsAdapter.currentPositionNumber;
                 currentQuestionNumber++;
                 Question question = questions.get(currentQuestionNumber);
                 showData(question);
-                questionsAdapter.currentPositionNumber = currentQuestionNumber;
-                questionsAdapter.notifyDataSetChanged();
                 } catch (Exception exception) {
                     showToast("Invalid Question");
                 }
@@ -96,12 +108,9 @@ public class QuestionsActivity extends BaseActivity {
     private void handlePreviousBtn() {
         activityQuestionsBinding.questionPrevBtn.setOnClickListener(v -> {
             try {
-                currentQuestionNumber = questionsAdapter.currentPositionNumber;
                 currentQuestionNumber--;
                 Question question = questions.get(currentQuestionNumber);
                 showData(question);
-                questionsAdapter.currentPositionNumber = currentQuestionNumber;
-                questionsAdapter.notifyDataSetChanged();
             } catch (Exception exception) {
                 showToast("Invalid Question");
             }

@@ -42,7 +42,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> 
         holder.questionItemLayoutBinding.getRoot().setOnClickListener(v -> {
             onItemActionListener.onClicked(question);
             currentPositionNumber = position;
-            notifyDataSetChanged();
         });
         if (currentPositionNumber == position) {
             holder.questionItemLayoutBinding.questionsNumberTxt.setTextColor(Color.parseColor("#311B92"));
