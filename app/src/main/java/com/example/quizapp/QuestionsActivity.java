@@ -33,6 +33,7 @@ public class QuestionsActivity extends BaseActivity {
         setUpQuestionRv();
         fetchQuestionDetails();
         handleNextBtn();
+        handlePreviousBtn();
     }
 
     private void setUpQuestionRv() {
@@ -90,5 +91,20 @@ public class QuestionsActivity extends BaseActivity {
                     showToast("Invalid Question");
                 }
             });
+    }
+
+    private void handlePreviousBtn() {
+        activityQuestionsBinding.questionPrevBtn.setOnClickListener(v -> {
+            try {
+                currentQuestionNumber = questionsAdapter.currentPositionNumber;
+                currentQuestionNumber--;
+                Question question = questions.get(currentQuestionNumber);
+                showData(question);
+                questionsAdapter.currentPositionNumber = currentQuestionNumber;
+                questionsAdapter.notifyDataSetChanged();
+            } catch (Exception exception) {
+                showToast("Invalid Question");
+            }
+        });
     }
 }
