@@ -17,6 +17,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> 
     private List<Question> questionList;
     protected int currentPositionNumber = 0;
     private OnItemActionListener onItemActionListener;
+
     public void setQuestionsList(List<Question> questionList) {
         this.questionList = questionList;
         notifyDataSetChanged();
@@ -38,7 +39,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull QuestionsViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Question question = questionList.get(position);
-        holder.questionItemLayoutBinding.questionsNumberTxt.setText(String.valueOf(position+1));
+        holder.questionItemLayoutBinding.questionsNumberTxt.setText(String.valueOf(position + 1));
         holder.questionItemLayoutBinding.getRoot().setOnClickListener(v -> {
             onItemActionListener.onClicked(question);
             currentPositionNumber = position;

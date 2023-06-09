@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import com.example.quizapp.databinding.ActivityQuestionsBinding;
 import com.example.quizapp.model.Question;
@@ -24,6 +25,8 @@ public class QuestionsActivity extends BaseActivity {
     private QuestionsAdapter questionsAdapter;
     private int currentQuestionNumber = 0;
 
+    private Integer[] answerOptionsIndexes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class QuestionsActivity extends BaseActivity {
         fetchQuestionDetails();
         handleNextBtn();
         handlePreviousBtn();
+        handleRadioGroup();
     }
 
     private void setUpQuestionRv() {
@@ -60,9 +64,11 @@ public class QuestionsActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     questions = response.body().get(0).getQuestions();
                     questionsAdapter.setQuestionsList(questions);
+                    answerOptionsIndexes = new Integer[questions.size()];
                     showData(questions.get(0));
                 }
             }
+
             @Override
             public void onFailure(Call<List<Quiz>> call, Throwable t) {
                 showToast("Failed to fetch Data");
@@ -71,20 +77,26 @@ public class QuestionsActivity extends BaseActivity {
     }
 
     private void showData(Question question) {
-        activityQuestionsBinding.questionTxt.setText(question.getQuestion());
-        activityQuestionsBinding.rb1.setText(question.getAnswers().get(0));
-        activityQuestionsBinding.rb2.setText(question.getAnswers().get(1));
-        activityQuestionsBinding.rb3.setText(question.getAnswers().get(2));
-        activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
-        currentQuestionNumber = question.getNumber()-1;
-        questionsAdapter.currentPositionNumber = currentQuestionNumber;
-        questionsAdapter.notifyDataSetChanged();
+        // Load the question and answer
+        setQuestions(question);
+        // Highlight the question number and previous question
+        setColor(question);
+        // Handle the PreviousButtonVisibility
+        setPreviousBtnVisibility();
+        // Handle the NextButtonVisibility
+        setNextBtnVisibility();
+    }
+
+    private void setPreviousBtnVisibility() {
         if (currentQuestionNumber == 0) {
             activityQuestionsBinding.questionPrevBtn.setVisibility(View.INVISIBLE);
         } else {
             activityQuestionsBinding.questionPrevBtn.setVisibility(View.VISIBLE);
         }
-        if (currentQuestionNumber == questions.size()-1) {
+    }
+
+    private void setNextBtnVisibility() {
+        if (currentQuestionNumber == questions.size() - 1) {
             activityQuestionsBinding.questionNextBtn.setVisibility(View.INVISIBLE);
             activityQuestionsBinding.submitBtn.setVisibility(View.VISIBLE);
         } else {
@@ -93,16 +105,42 @@ public class QuestionsActivity extends BaseActivity {
         }
     }
 
+    private void setColor(Question question) {
+        currentQuestionNumber = question.getNumber() - 1;
+        questionsAdapter.currentPositionNumber = currentQuestionNumber;
+        questionsAdapter.notifyDataSetChanged();
+    }
+
+    private void setQuestions(Question question) {
+        activityQuestionsBinding.questionTxt.setText(question.getQuestion());
+        activityQuestionsBinding.questionRadioGroupRg.clearCheck();
+        activityQuestionsBinding.rb1.setText(question.getAnswers().get(0));
+        activityQuestionsBinding.rb2.setText(question.getAnswers().get(1));
+        activityQuestionsBinding.rb3.setText(question.getAnswers().get(2));
+        activityQuestionsBinding.rb4.setText(question.getAnswers().get(3));
+        if (answerOptionsIndexes[currentQuestionNumber] != null) {
+            if (answerOptionsIndexes[currentQuestionNumber] == 0) {
+                activityQuestionsBinding.rb1.setChecked(true);
+            } else if (answerOptionsIndexes[currentQuestionNumber] == 1) {
+                activityQuestionsBinding.rb2.setChecked(true);
+            } else if (answerOptionsIndexes[currentQuestionNumber] == 2) {
+                activityQuestionsBinding.rb3.setChecked(true);
+            } else if (answerOptionsIndexes[currentQuestionNumber] == 3) {
+                activityQuestionsBinding.rb4.setChecked(true);
+            }
+        }
+    }
+
     private void handleNextBtn() {
-            activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
-                try {
+        activityQuestionsBinding.questionNextBtn.setOnClickListener(v -> {
+            try {
                 currentQuestionNumber++;
                 Question question = questions.get(currentQuestionNumber);
                 showData(question);
-                } catch (Exception exception) {
-                    showToast("Invalid Question");
-                }
-            });
+            } catch (Exception exception) {
+                showToast("Invalid Question");
+            }
+        });
     }
 
     private void handlePreviousBtn() {
@@ -113,6 +151,23 @@ public class QuestionsActivity extends BaseActivity {
                 showData(question);
             } catch (Exception exception) {
                 showToast("Invalid Question");
+            }
+        });
+    }
+
+    private void handleRadioGroup() {
+        activityQuestionsBinding.questionRadioGroupRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (activityQuestionsBinding.rb1.isChecked()) {
+                    answerOptionsIndexes[currentQuestionNumber] = 0;
+                } else if (activityQuestionsBinding.rb2.isChecked()) {
+                    answerOptionsIndexes[currentQuestionNumber] = 1;
+                } else if (activityQuestionsBinding.rb3.isChecked()) {
+                    answerOptionsIndexes[currentQuestionNumber] = 2;
+                } else if (activityQuestionsBinding.rb4.isChecked()) {
+                    answerOptionsIndexes[currentQuestionNumber] = 3;
+                }
             }
         });
     }

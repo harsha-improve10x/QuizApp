@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/questions_rv" />
 
     <RadioGroup
+        android:id="@+id/question_radio_group_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
